@@ -2,7 +2,7 @@
 UPDATE
   books_location AS bl
 JOIN 
-  oan_records AS lr
+  loan_records AS lr
 ON
   (lr.books_location_id = bl.books_location_id)
 SET
