@@ -1,3 +1,4 @@
+-- find all details of a book by ISBN 
 SELECT b.book_id AS BookID, b.isbn AS ISBN, b.book_title AS BookTitle,
 a.author_name AS AuthorName, 
 c.category_name AS Catagory, 
