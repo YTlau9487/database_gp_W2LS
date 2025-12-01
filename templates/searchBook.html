@@ -1,17 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+<html>
+<head><title>Search Books</title></head>
 <body>
-    <h1>Search Book</h1>
-    <form action="/searchBook" method="get">    
-        <label for="title">Book Title:</label>
-        <input type="text" id="title" name="title" required>
-        <label for="author">Author:</label>
-        <input type="text" id="author" name="author" required>
+    <h2>Search Book</h2>
+
+    <form action="/search" method="POST">
+        <label for="book_title">Book title: </label>
+        <input type="text" name="book_title" placeholder="Enter book title">
+        <br>
+        <label for="author_name">Author Name: </label>
+        <input type="text" name="author_name" placeholder="Enter author name">
+        <br>
+        <label for="isbn_no">ISBN No: </label>
+        <input type="text" name="isbn_no" placeholder="Enter isbn number">
+        <br>
         <button type="submit">Search</button>
+    </form>
+
+    {% if error %}
+        <span style="color: red;">{{ error }}</span>
+    {% endif %}
+
+    <hr>
+
+    {% if books %}
+        <table border="1">
+            <tr>
+                <th>Book ID</th>
+                <th>ISBN NO</th>
+                <th>Book Title</th>
+                <th>Author</th>
+                <th>Category</th>
+                <th>Publisher</th>
+                <th>Location District</th>
+                <th>Book Shelf</th>
+                <th>Shelf Level</th>
+            </tr>
+            {% for book in books %}
+            <tr>
+                
+                <td>{{ book[0] }}</td>
+                <td>{{ book[1] }}</td>
+                <td>{{ book[2] }}</td>
+                <td>{{ book[3] }}</td>
+                <td>{{ book[4] }}</td>
+                <td>{{ book[5] }}</td>
+                <td>{{ book[6] }}</td>
+                <td>{{ book[7] }}</td>
+                <td>{{ book[8] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No books found or search to see results.</p>
+    {% endif %}
 </body>
 </html>
