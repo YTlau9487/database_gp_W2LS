@@ -3,7 +3,7 @@
 * Create a ```.env``` file by copying ```.env.example```, then update each key with your own values.
 * Create a Python virtual environment using the command below:
 ```
-python -m venv .venv
+py -m venv .venv
 ```
 
 ## Installation
