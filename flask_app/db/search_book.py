@@ -1,9 +1,8 @@
 from sqlalchemy import text, Engine
 
 
-def search_book(engine: Engine, book_title="", author_name=""):
+def search_book(engine: Engine, book_title="", author_name="", isbn_no=""):
     with engine.connect() as conn:
-        result = []
         rows = conn.execute(
             text(
                 """SELECT 
@@ -23,10 +22,12 @@ def search_book(engine: Engine, book_title="", author_name=""):
                     AND 
                     (author_name LIKE CONCAT("%", (:author_name), "%") OR (:author_name) = "")
                     AND 
+                    (isbn_no LIKE CONCAT("%", (:isbn_no), "%") OR (:isbn_no) = "")
+                    AND 
                     book_status = 'O'
                 """
             ),
-            [{"book_title": book_title, "author_name": author_name}],
+            [{"book_title": book_title, "author_name": author_name, "isbn_no": isbn_no}],
         )
 
         # return 

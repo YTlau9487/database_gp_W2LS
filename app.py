@@ -1,6 +1,5 @@
 from flask import Flask
 from sqlalchemy import text
-
 from flask_app import routes
 from flask_app.utils.database import engine
 
@@ -30,7 +29,6 @@ with engine.connect() as conn:
 print("All records created successfully!")
 
 app = Flask(__name__)
-
 routes.init_routes(app)
 
 

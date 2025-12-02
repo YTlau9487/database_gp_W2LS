@@ -13,7 +13,7 @@ def search_books():
 
     # query = request.form.get('search_query', '').strip()
     if request.method == "GET":
-        return render_template("search_book.html")
+        return render_template("searchBook.html")
 
     elif request.method == "POST":
         book_title = request.form.get("book_title", "")
@@ -23,11 +23,12 @@ def search_books():
 
         if not (book_title or author_name or isbn_no):
             return render_template(
-                "search_book.html",
+                "searchBook.html",
                 error="Please enter a book title or author name or ISBN number.",
             )
-        results = search_book(engine, book_title, author_name)
+        results = search_book(engine, book_title, author_name, isbn_no)
+        # print("query result: ", results , "type of: ", type(results))
         print("query result: ", results)
-
-        return render_template("search_book.html", books=results)
+        print("result type: ", type(results))
+        return render_template("searchBook.html", books=results)
 
