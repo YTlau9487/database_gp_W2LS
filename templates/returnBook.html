@@ -37,11 +37,15 @@
         <span class="text-red-400">{{ error }}</span>
     {% endif %}
 
-    <hr>
+    {% if success %}
+      <p class="text-green-500">{{ success }}</p>
+    {% endif %}
+
+    <hr class="my-4">
 
     {% if reader_name %}
-        <p>Reader name: {{ reader_name }}</p>
-        <p>Loan Books:</p>
+        <p class="mb-2">Reader name: {{ reader_name }}</p>
+        <p class="mb-2">Loan Books:</p>
         
         {% if loan_books %}
             <table class="table-auto w-[85] border-collapse border border-gray-300 mt-4">
