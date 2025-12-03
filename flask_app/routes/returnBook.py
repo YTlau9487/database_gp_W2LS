@@ -9,37 +9,6 @@ from ..db.return_book_system.getReaderIdByLoanID import getReaderIdByLoanID
 
 return_book_bp = Blueprint("returnBook", __name__)
 
-# @return_book_bp.route("/return-book", methods=["GET","POST"])
-# def return_book():
-#   status = request.args.get("status")
-#   reader_id_qs = request.args.get("reader_id")
-
-#   if request.method == "GET":
-#     return render_template("returnBook.html")
-  
-#   reader_id = request.form.get("reader_id")
-  
-#   try:
-#     reader_id = int(reader_id)
-#   except:
-#     error = "Invalid reader ID"
-#     return render_template("returnBook.html",error=error)
-  
-#   if isRecorded(engine, reader_id) == 1:
-#     reader_name = displayReaderName(engine, reader_id)
-#     loans_books = displayNotReturn(engine, reader_id)
-
-#     sucess_msg = None
-#     error_msg = None
-#     if status == "success":
-#       success_msg = "Book returned successfully"
-#     elif status -- "error":
-#       error_msg = "Error occurred when returning book"
-#     return render_template("returnBook.html",reader_name=reader_name, loans_books=loans_books, success=success_msg, error=error_msg)
-#   else:
-#     error = "Reader does not exist"
-#     return render_template("returnBook.html",error=error)
-
 @return_book_bp.route("/return-book", methods=["GET", "POST"])
 def return_book():
     status = request.args.get("status")
