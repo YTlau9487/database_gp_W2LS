@@ -112,3 +112,5 @@ FROM books
   INNER JOIN author_info USING (author_id)
   INNER JOIN books_location USING (book_id)
   INNER JOIN locations USING (loc_id);
+
+  
