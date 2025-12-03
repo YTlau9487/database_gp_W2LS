@@ -28,6 +28,7 @@ with engine.connect() as conn:
 
 print("All records created successfully!")
 
+
 app = Flask(__name__)
 routes.init_routes(app)
 
