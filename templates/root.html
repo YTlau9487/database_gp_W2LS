@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Library Management System</title>
+  </head>
+  <body class="min-h-screen flex flex-col items-center justify-center bg-white">
+    <h1
+      class="text-4xl md:text-5xl font-bold text-gray-800 mb-16 text-center px-6"
+    >
+      Welcome to the Library Management System
+    </h1>
+
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-5xl w-full px-6"
+    >
+      <a
+        href="/add-book"
+        class="bg-green-600 hover:opacity-80 active:opacity-60 text-white text-lg font-semibold py-6 rounded-lg text-center shadow-md hover:shadow-xl active:shadow-lg transition-all duration-150"
+      >
+        Add Book
+      </a>
+      <a
+        href="/search"
+        class="bg-blue-600 hover:opacity-80 active:opacity-60 text-white text-lg font-semibold py-6 rounded-lg text-center shadow-md hover:shadow-xl active:shadow-lg transition-all duration-150"
+      >
+        Search Books
+      </a>
+      <a
+        href="/return-book"
+        class="bg-amber-500 hover:opacity-80 active:opacity-60 text-gray-900 text-lg font-semibold py-6 rounded-lg text-center shadow-md hover:shadow-xl active:shadow-lg transition-all duration-150"
+      >
+        Return Book
+      </a>
+      <a
+        href="/delete-book"
+        class="bg-red-600 hover:opacity-80 active:opacity-60 text-white text-lg font-semibold py-6 rounded-lg text-center shadow-md hover:shadow-xl active:shadow-lg transition-all duration-150"
+      >
+        Delete Book
+      </a>
+    </div>
+  </body>
+</html>
