@@ -10,4 +10,4 @@ def UpdateState(engine: Engine, book_id):
       """
     ), {"bid":book_id})
     
-    return result.all()
+    return True
