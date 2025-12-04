@@ -1,0 +1,111 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    loan book
+{% endblock %}
+
+{% set actionUrl = '/loan-book' %}
+
+{% block pageTitle %}
+    {% if reader_name %}
+        Welcome {{ reader_name }}
+    {% else %}
+        loan book
+    {% endif %}
+{% endblock %}
+
+{% block formContent %}
+    {% if not reader_name %}
+        <!-- Reader ID  (POST) -->
+        <div class="flex items-center">
+            <label for="reader_id" class="w-40 font-medium">Reader ID:</label>
+            <input type="number" name="reader_id" id="reader_id"
+                   placeholder="Enter reader ID"
+                   class="ml-2 p-1 border border-gray-300 rounded w-64"
+                   required>
+        </div>
+        <button type="submit"
+                class="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
+            Enter
+        </button>
+
+    {% elif reader_name %}
+        <!-- ISBN search (POST) -->
+        <input type="hidden" name="reader_name" value="{{ reader_name }}">
+        <div class="flex items-center mt-4">
+            <label for="ISBN" class="w-40 font-medium">ISBN:</label>
+            <input type="text" name="ISBN" id="ISBN"
+                   placeholder="Enter ISBN"
+                   class="ml-2 p-1 border border-gray-300 rounded w-64">
+        </div>
+        <button type="submit"
+                class="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
+            Search
+        </button>
+    {% endif %}
+{% endblock %}
+
+{% block main %}
+    {% if LoginFail %}
+        <span class="text-red-400">{{ LoginFail }}</span>
+    {% endif %}
+    {% if NullFind %}
+        <span class="text-red-400">{{ NullFind }}</span>
+    {% endif %}
+    {% if NoFind %}
+        <span class="text-red-400">{{ NoFind }}</span>
+    {% endif %}
+    {% if LoanSuccess %}
+    <span class="text-green-500">{{ LoanSuccess }}</span>
+    {% endif %}
+
+    <hr class="my-4">
+
+    {% if reader_name %}
+    {% if datail %}
+        <table class="table-auto w-[85] border-collapse border border-gray-300 mt-4">
+            <thead class="bg-zinc-600 text-white">
+                <tr>
+                    <th class="border px-4 py-2">Book ID</th>
+                    <th class="border px-4 py-2">ISBN</th>
+                    <th class="border px-4 py-2">Book Title</th>
+                    <th class="border px-4 py-2">Author</th>
+                    <th class="border px-4 py-2">Category</th>
+                    <th class="border px-4 py-2">Publisher</th>
+                    <th class="border px-4 py-2">Location District</th>
+                    <th class="border px-4 py-2">Book Shelf</th>
+                    <th class="border px-4 py-2">Shelf Level</th>
+                    <th class="border px-4 py-2">Loan</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in datail %}
+                <tr class="{% if loop.index0 % 2 == 0 %}bg-white{% else %}bg-gray-100{% endif %}">
+                    <td class="border px-4 py-2">{{ row[0] }}</td>
+                    <td class="border px-4 py-2">{{ row[1] }}</td>
+                    <td class="border px-4 py-2">{{ row[2] }}</td>
+                    <td class="border px-4 py-2">{{ row[3] }}</td>
+                    <td class="border px-4 py-2">{{ row[4] }}</td>
+                    <td class="border px-4 py-2">{{ row[5] }}</td>
+                    <td class="border px-4 py-2">{{ row[6] }}</td>
+                    <td class="border px-4 py-2">{{ row[7] }}</td>
+                    <td class="border px-4 py-2">{{ row[8] }}</td>
+                    <td class="border px-4 py-2 text-center">
+                        <form action="/loan-book" method="POST">
+                            <input type="hidden" name="Loan" value="true">
+                            <input type="hidden" name="reader_name" value="{{ reader_name }}">
+                            <input type="hidden" name="BookID" value="{{ row[0] }}">
+                            <button type="submit"
+                                    class="inline-flex items-center justify-center w-6 h-6 rounded-full border border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
+                                    title="loan this book">
+                                +
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+  {% endif %}
+{% endblock %}
