@@ -10,4 +10,4 @@ def ReaderName(engine: Engine, reader_id):
       """
     ), {"rId":reader_id})
     
-    return result.all()
+    return result.scalar()
