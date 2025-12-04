@@ -1,21 +1,28 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-        <title>
-            {% block title %}
-            {% endblock %}
-        </title>
-    </head>
-    <body>
-        <h2 class="text-xl font-bold">{% block pageTitle %}{% endblock %}</h2>
-        <form action="{{ actionUrl }}" method="POST" class="space-y-4 my-4">
-            {% block formContent %}
-            {% endblock %}
-        </form>
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>{% block title %} {% endblock %}</title>
+  </head>
+  <body class="relative min-h-screen">
+    <a
+      href="/"
+      class="fixed top-4 right-4 z-10 px-4 py-2 text-sm font-medium text-white bg-gray-600 hover:bg-gray-600/80 active:bg-gray-600/60 rounded shadow-lg transition duration-150"
+    >
+      Return to Homepage
+    </a>
 
-        {% block main %}
-        {% endblock %}
-    </body>
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+      <h2 class="text-2xl font-bold mb-6">
+        {% block pageTitle %}{% endblock %}
+      </h2>
+
+      <form action="{{ actionUrl }}" method="POST" class="space-y-4 my-4">
+        {% block formContent %} {% endblock %}
+      </form>
+
+      {% block main %} {% endblock %}
+    </div>
+  </body>
 </html>
