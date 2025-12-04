@@ -1,4 +1,5 @@
 from flask import Flask
+import os   
 from sqlalchemy import text
 from flask_app import routes
 from flask_app.utils.database import engine
@@ -30,6 +31,9 @@ print("All records created successfully!")
 
 
 app = Flask(__name__)
+# set secret key
+app.secret_key = os.environ.get("SECRET_KEY", "dev_local_secret_key")
 routes.init_routes(app)
+
 
 
