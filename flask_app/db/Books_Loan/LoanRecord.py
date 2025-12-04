@@ -9,4 +9,4 @@ def LoanRecord(engine: Engine, reader_id, books_location_id):
       """
     ),{"rid":reader_id}, {"blid":books_location_id})
     
-    return result.all()
+    return True

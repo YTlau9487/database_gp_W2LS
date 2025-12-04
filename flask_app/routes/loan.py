@@ -39,8 +39,11 @@ def BookLoan():
             reader = request.form.get("reader_name")
 
             # insert loan record and update book state
-            LoanRecord(engine, reader, location)
-            UpdateState(engine, book)
+            try:
+                LoanRecord(engine, reader, location)
+                UpdateState(engine, book)
+            except:
+                return render_template("booksLoan.html", reader_name=reader, LoanFail="Loan failed, please try again")
 
             # null session
             session["location_id"] = None
