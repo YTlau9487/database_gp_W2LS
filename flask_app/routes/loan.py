@@ -66,8 +66,9 @@ def BookLoan():
 
             save = FindLocation(engine, ISBN)
             if save:
-                session['location_id'] = int(save[0])
-                session['book_id'] = int(save[1])
+                row = save[0]
+                session['location_id'] = row[0]
+                session['book_id'] = row[1]
 
             return render_template(
                 "booksLoan.html",
