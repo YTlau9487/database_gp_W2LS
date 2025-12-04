@@ -56,16 +56,13 @@
 
       <div>
         <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
-        <select id="category" name="category" onchange="onCategoryChange()" required
+              <select id="category" name="category" required
                 class="mt-1 block w-full rounded-md border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
           <option value="">-- choose category --</option>
           {% for c in categories %}
             <option value="{{ c }}" {% if form and form.get('category')==c %}selected{% endif %}>{{ c }}</option>
           {% endfor %}
-          <option value="__new__" {% if form and form.get('category')=='__new__' %}selected{% endif %}>Add new category...</option>
-        </select>
-        <input id="category_new" name="category_new" type="text" placeholder="New category name"
-                class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 hidden" value="{{ (form.get('category_new') if form is defined else '') | e }}">
+              </select>
       </div>
 
       <div>
@@ -120,18 +117,3 @@
 </div>
 
 {% endblock %}
-
-<script>
-function onCategoryChange(){
-  var sel = document.getElementById('category');
-  var newInp = document.getElementById('category_new');
-  if (sel.value === '__new__') {
-    newInp.classList.remove('hidden');
-    newInp.required = true;
-  } else {
-    newInp.classList.add('hidden');
-    newInp.required = false;
-  }
-}
-document.addEventListener('DOMContentLoaded', onCategoryChange);
-</script>
