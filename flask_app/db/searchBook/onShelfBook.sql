@@ -16,4 +16,4 @@ WHERE (
         author_name LIKE CONCAT("%", :author_name, "%")
         OR (:author_name) = ""
     )
-    AND book_status = 'O'
+    AND book_status = 'O';

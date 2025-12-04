@@ -114,3 +114,4 @@ FROM books
   INNER JOIN locations USING (loc_id);
 
   
+CREATE INDEX index_book_title ON books (book_title);
