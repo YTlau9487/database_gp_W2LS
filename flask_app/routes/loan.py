@@ -51,8 +51,8 @@ def BookLoan():
 
         # check ISBN
         ISBN = request.form.get("ISBN")
+        reader_name = request.form.get("reader_name")  # keep reader name
         if ISBN:
-            reader_name = request.form.get("reader_name")  # keep reader name
             results = FindBook(engine, ISBN)  # find book by ISBN
             if not results:
                 return render_template(
@@ -70,6 +70,14 @@ def BookLoan():
                 "booksLoan.html",
                 datail=results,
                 reader_name=reader_name
+            )
+
+        # If ISBN is null but has reader_name
+        if reader_name:
+            return render_template(
+                "booksLoan.html",
+                reader_name=reader_name,
+                NoFind="Please input ISBN"
             )
 
         # if no valid form data, reload page

@@ -24,4 +24,4 @@ def FindBook(engine: Engine, ISBN):
       """
     ),{"isbn":ISBN})
     
-    return result.all()
+    return result.scalar()
