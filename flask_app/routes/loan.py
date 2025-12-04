@@ -10,7 +10,7 @@ BooksLoan_bp = Blueprint("BooksLoan", __name__)
 app = Flask(__name__)
 app.secret_key = "you_guess"
 
-@BooksLoan_bp.route("/loan", methods=["GET", "POST"])
+@BooksLoan_bp.route("/loan-book", methods=["GET", "POST"])
 def BookLoan():
     results = None
     reader_name = None
