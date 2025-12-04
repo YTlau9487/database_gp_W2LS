@@ -2,6 +2,7 @@
 from flask import Flask, Blueprint
 
 def init_routes(app: Flask):
+    from .rootPage import root_bp
     from .search import search_bp
     from .returnBook import return_book_bp
     # from .loan import loan_bp
@@ -9,6 +10,7 @@ def init_routes(app: Flask):
     from .addBook import addBook_bp
     from .deleteBook import deleteBook_bp
 
+    app.register_blueprint(root_bp)
     app.register_blueprint(search_bp)
     app.register_blueprint(return_book_bp)
     # app.register_blueprint(loan_bp)
