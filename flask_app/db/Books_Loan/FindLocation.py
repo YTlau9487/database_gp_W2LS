@@ -6,7 +6,7 @@ def FindLocation(engine: Engine, ISBN):
       """
       SELECT books_location_id, b.book_id
       FROM books_location bl, books b
-      WHERE bl.book_id = SELECT b.book_id FROM books b WHERE b.isbn = :isbn;
+      WHERE bl.book_id = (SELECT b.book_id FROM books b WHERE b.isbn_no = :isbn);
       """
     ), {"isbn":ISBN})
     
