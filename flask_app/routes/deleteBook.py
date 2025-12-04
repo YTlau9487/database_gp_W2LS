@@ -5,7 +5,7 @@ from ..db.book_management_system.delete_book import delete_book
 deleteBook_bp = Blueprint("deleteBook", __name__)
 
 
-@deleteBook_bp.route("/deleteBook", methods=["GET", "POST"])
+@deleteBook_bp.route("/delete-book", methods=["GET", "POST"])
 def delete_book_view():
     action = url_for("deleteBook.delete_book_view")
     if request.method == "GET":

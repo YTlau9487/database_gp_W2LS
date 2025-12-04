@@ -5,7 +5,7 @@ from datetime import date
 
 addBook_bp = Blueprint("addBook", __name__)
 
-@addBook_bp.route("/addBook", methods=["GET", "POST"])
+@addBook_bp.route("/add-book", methods=["GET", "POST"])
 def add_book():
     # load categories for select
     with engine.connect() as conn:
