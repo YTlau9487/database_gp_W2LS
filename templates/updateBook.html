@@ -1,0 +1,192 @@
+{% extends "layout.html" %}
+
+{% block title %}Update Book{% endblock %}
+
+{% block pageTitle %}Update Book{% endblock %}
+
+{% block formContent %}
+  <div class="w-full max-w-2xl mx-auto">
+    {% if message %}
+      <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+        {{ message }}
+      </div>
+    {% endif %}
+
+    {% if error %}
+      <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+        {{ error }}
+      </div>
+    {% endif %}
+
+    <!-- Search Form (shown if book not found yet) -->
+    {% if not book %}
+      <div class="p-4 bg-gray-50 border border-gray-300 rounded-md mb-6">
+        <h3 class="text-lg font-semibold mb-4">Search for Book</h3>
+        <div class="mb-4">
+          <label for="search_book_id" class="block text-sm font-medium text-gray-700 mb-1">
+            Book ID
+          </label>
+          <input
+            type="text"
+            id="search_book_id"
+            name="search_book_id"
+            value="{{ form.get('search_book_id', '') }}"
+            placeholder="Enter book ID to search"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            required
+          />
+        </div>
+        <button
+          type="submit"
+          name="action"
+          value="search"
+          class="w-full px-4 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 active:bg-blue-800 transition duration-150"
+        >
+          Search
+        </button>
+      </div>
+    {% endif %}
+
+    <!-- Edit Form (shown if book is found) -->
+    {% if book %}
+      <div class="p-4 bg-blue-50 border border-blue-300 rounded-md mb-6">
+        <p class="text-sm text-blue-700">
+          <strong>Book found:</strong> {{ book.book_title }} (ID: {{ book.book_id }})
+        </p>
+      </div>
+
+      <input type="hidden" name="book_id" value="{{ book.book_id }}" />
+
+      <div class="mb-4">
+        <label for="isbn_no" class="block text-sm font-medium text-gray-700 mb-1">
+          ISBN
+        </label>
+        <input
+          type="text"
+          id="isbn_no"
+          name="isbn_no"
+          value="{{ book.isbn_no if book else form.get('isbn_no', '') }}"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          required
+        />
+      </div>
+
+      <div class="mb-4">
+        <label for="book_title" class="block text-sm font-medium text-gray-700 mb-1">
+          Book Title
+        </label>
+        <input
+          type="text"
+          id="book_title"
+          name="book_title"
+          value="{{ book.book_title if book else form.get('book_title', '') }}"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          required
+        />
+      </div>
+
+      <div class="mb-4">
+        <label for="category" class="block text-sm font-medium text-gray-700 mb-1">
+          Category
+        </label>
+        <select
+          id="category"
+          name="category"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          required
+        >
+          <option value="">-- Select Category --</option>
+          {% for cat in categories %}
+            <option value="{{ cat }}" {% if book and book.category_name == cat %}selected{% endif %}>
+              {{ cat }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="mb-4">
+        <label for="publisher" class="block text-sm font-medium text-gray-700 mb-1">
+          Publisher
+        </label>
+        <input
+          list="publisher_list"
+          id="publisher"
+          name="publisher"
+          value="{{ book.publisher_name if book else form.get('publisher', '') }}"
+          placeholder="Type or select publisher"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          required
+        />
+        <datalist id="publisher_list">
+          {% for pub in publishers %}
+            <option value="{{ pub }}">{{ pub }}</option>
+          {% endfor %}
+        </datalist>
+      </div>
+
+      <hr class="my-6 border-gray-300" />
+      <h3 class="text-lg font-semibold mb-4">Location</h3>
+
+      <div class="mb-4">
+        <label for="loc_district" class="block text-sm font-medium text-gray-700 mb-1">
+          Location District
+        </label>
+        <input
+          type="text"
+          id="loc_district"
+          name="loc_district"
+          value="{{ location.loc_district if location else form.get('loc_district', '') }}"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          required
+        />
+      </div>
+
+      <div class="mb-4">
+        <label for="book_shelf" class="block text-sm font-medium text-gray-700 mb-1">
+          Shelf
+        </label>
+        <input
+          type="text"
+          id="book_shelf"
+          name="book_shelf"
+          value="{{ location.book_shelf if location else form.get('book_shelf', '') }}"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          required
+        />
+      </div>
+
+      <div class="mb-4">
+        <label for="shelf_level" class="block text-sm font-medium text-gray-700 mb-1">
+          Shelf Level
+        </label>
+        <input
+          type="number"
+          id="shelf_level"
+          name="shelf_level"
+          value="{{ location.shelf_level if location else form.get('shelf_level', '') }}"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          required
+        />
+      </div>
+
+      <div class="flex gap-4">
+        <button
+          type="submit"
+          name="action"
+          value="update"
+          class="flex-1 px-4 py-2 bg-indigo-600 text-white font-medium rounded-md hover:bg-indigo-700 active:bg-indigo-800 transition duration-150"
+        >
+          Update Book
+        </button>
+        <button
+          type="submit"
+          name="action"
+          value="search"
+          class="flex-1 px-4 py-2 bg-gray-400 text-white font-medium rounded-md hover:bg-gray-500 active:bg-gray-600 transition duration-150"
+        >
+          Search Another
+        </button>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}
