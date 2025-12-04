@@ -8,6 +8,6 @@ def ReaderName(engine: Engine, reader_id):
       FROM reader_info
       WHERE reader_id = :rId;
       """
-    ), {"rid":reader_id})
+    ), {"rId":reader_id})
     
     return result.all()
