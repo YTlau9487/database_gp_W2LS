@@ -14,7 +14,10 @@ app.secret_key = "you_guess"
 def BookLoan():
     if request.method == "GET":
         # original page load
-        return render_template("booksLoan.html")
+        ID = request.args.get("reader_id")
+        if not ID:
+            return render_template("booksLoan.html")
+        
 
     elif request.method == "POST":
         # check Reader ID(1)

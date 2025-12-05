@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    loan book
+{% endblock %}
+
+{% set actionUrl = '/loan-book/finish' %}
+
+{% block pageTitle %}
+      You successfully borrowed a book
+{% endblock %}
+
+{% block formContent %}
+  <a href="/loan-book/login"
+     class="mt-4 px-4 py-2 bg-blue-500 text-white rounded inline-block">
+     Continue
+  </a>
+{% endblock %}
+
+{% block main %}
+{% endblock %}

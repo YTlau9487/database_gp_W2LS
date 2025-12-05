@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    loan book
+{% endblock %}
+
+{% set actionUrl = '/loan-book/login' %}
+
+{% block pageTitle %}
+        Please enter your Reader ID
+{% endblock %}
+
+{% block formContent %}
+  <form method="post">
+    <div class="flex items-center">
+        <label for="reader_id" class="w-40 font-medium">Reader ID:</label>
+        <input type="number" name="reader_id" id="reader_id"
+               placeholder="Enter reader ID"
+               class="ml-2 p-1 border border-gray-300 rounded w-64"
+               required>
+    </div>
+    <button type="submit"
+            class="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
+        Enter
+    </button>
+  </form>
+{% endblock %}
+
+{% block main %}
+    {% if LoginFail %}
+        <span class="text-red-400">{{ LoginFail }}</span>
+    {% endif %}
+{% endblock %}

@@ -1,13 +1,13 @@
 from sqlalchemy import text, Engine
 
-def ReaderName(engine: Engine, reader_id):
+def FindID(engine: Engine, Name):
   with engine.connect() as conn:
     result = conn.execute(text(
       """
-      SELECT reader_name
-      FROM reader_info
-      WHERE reader_id = :rId;
+      SELECT reader_id
+      FROM reader_info 
+      WHERE reader_name = :name;
       """
-    ), {"rId":reader_id})
+    ), {"name":Name})
     
     return result.scalar()
