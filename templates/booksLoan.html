@@ -15,8 +15,20 @@
 {% endblock %}
 
 {% block formContent %}
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="mb-4">
+          {% for category, message in messages %}
+            <p class="{% if category == 'error' %}text-red-400{% elif category == 'success' %}text-green-500{% else %}text-gray-700{% endif %}">
+              {{ message }}
+            </p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
     {% if not reader_name %}
-        <!-- Reader ID  (POST) -->
         <div class="flex items-center">
             <label for="reader_id" class="w-40 font-medium">Reader ID:</label>
             <input type="number" name="reader_id" id="reader_id"
@@ -25,12 +37,11 @@
                    required>
         </div>
         <button type="submit"
-                class="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
+                class="mt-4 px-4 py-2 bg-blue-500 hover:bg-blue-500/80 active:bg-blue-500/60 cursor-pointer text-white rounded duration-100">
             Enter
         </button>
 
-    {% elif reader_name %}
-        <!-- ISBN search (POST) -->
+    {% else %}
         <input type="hidden" name="reader_name" value="{{ reader_name }}">
         <div class="flex items-center mt-4">
             <label for="ISBN" class="w-40 font-medium">ISBN:</label>
@@ -39,31 +50,18 @@
                    class="ml-2 p-1 border border-gray-300 rounded w-64">
         </div>
         <button type="submit"
-                class="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
+                class="mt-4 px-4 py-2 bg-blue-500 hover:bg-blue-500/80 active:bg-blue-500/60 cursor-pointer text-white rounded duration-100">
             Search
         </button>
     {% endif %}
 {% endblock %}
 
 {% block main %}
-    {% if LoginFail %}
-        <span class="text-red-400">{{ LoginFail }}</span>
-    {% endif %}
-    {% if NullFind %}
-        <span class="text-red-400">{{ NullFind }}</span>
-    {% endif %}
-    {% if NoFind %}
-        <span class="text-red-400">{{ NoFind }}</span>
-    {% endif %}
-    {% if LoanSuccess %}
-    <span class="text-green-500">{{ LoanSuccess }}</span>
-    {% endif %}
 
     <hr class="my-4">
 
-    {% if reader_name %}
-    {% if datail %}
-        <table class="table-auto w-[85] border-collapse border border-gray-300 mt-4">
+    {% if reader_name and datail %}
+        <table class="table-auto w-full border-collapse border border-gray-300 mt-4">
             <thead class="bg-zinc-600 text-white">
                 <tr>
                     <th class="border px-4 py-2">Book ID</th>
@@ -91,12 +89,10 @@
                     <td class="border px-4 py-2">{{ row[7] }}</td>
                     <td class="border px-4 py-2">{{ row[8] }}</td>
                     <td class="border px-4 py-2 text-center">
-                        <form action="/loan-book" method="POST">
-                            <input type="hidden" name="Loan" value="true">
-                            <input type="hidden" name="reader_name" value="{{ reader_name }}">
-                            <input type="hidden" name="BookID" value="{{ row[0] }}">
+                        <form action="/loan-book/confirm" method="POST">
+                            <input type="hidden" name="book_id" value="{{ row[0] }}">
                             <button type="submit"
-                                    class="inline-flex items-center justify-center w-6 h-6 rounded-full border border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
+                                    class="inline-flex items-center justify-center w-6 h-6 rounded-full border border-green-500 text-green-500 cursor-pointer hover:bg-green-500/80 active:bg-green-500/60 hover:text-white duration-100"
                                     title="loan this book">
                                 +
                             </button>
@@ -107,5 +103,4 @@
             </tbody>
         </table>
     {% endif %}
-  {% endif %}
 {% endblock %}

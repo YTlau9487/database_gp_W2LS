@@ -1,88 +1,84 @@
-from flask import Blueprint, render_template, request, Flask, session
+from flask import Blueprint, render_template, request, session, redirect, url_for, flash
 from ..utils.database import engine
 from ..db.Books_Loan.FindBook import FindBook
-from ..db.Books_Loan.LoanRecord import LoanRecord
+from ..db.Books_Loan.InsertLoanRecord import InsertLoanRecord
 from ..db.Books_Loan.ReaderName import ReaderName
 from ..db.Books_Loan.UpdateState import UpdateState
 from ..db.Books_Loan.FindLocation import FindLocation
+from ..db.Books_Loan.FindLocationIDByBookId import FindLocationIDByBookId
 
 BooksLoan_bp = Blueprint("booksLoan", __name__)
-app = Flask(__name__)
-app.secret_key = "you_guess"
 
 @BooksLoan_bp.route("/loan-book", methods=["GET", "POST"])
 def BookLoan():
     if request.method == "GET":
-        # original page load
         return render_template("booksLoan.html")
 
     elif request.method == "POST":
-        # check Reader ID(1)
+        # Step 1: Check Reader ID
         reader_id = request.form.get("reader_id")
         if reader_id:
             try:
                 reader_id = int(reader_id)
-            except:
-                return render_template("booksLoan.html", LoginFail="Invalid reader ID")
+                reader_name = ReaderName(engine, reader_id)
+                if not reader_name:
+                    flash("Reader ID not found.", "error")
+                    return render_template("booksLoan.html", reader_name=None)
 
-            reader_name = ReaderName(engine, reader_id)
-            if not reader_name:
-                return render_template("booksLoan.html", LoginFail="Reader ID not found")
-            else:
+                session['reader_id'] = reader_id
+                session['reader_name'] = reader_name
                 return render_template("booksLoan.html", reader_name=reader_name)
 
-        # check Loan (2)
-        Loan = request.form.get("Loan")
-        if session.get("location_id") and Loan:
-            location = session['location_id']
-            book = session['book_id']
-            reader = request.form.get("reader_name")
+            except ValueError:
+                flash("Invalid Reader ID.", "error")
+                return render_template("booksLoan.html")
 
-            # insert loan record and update book state
-            try:
-                LoanRecord(engine, reader, location)
-                UpdateState(engine, book)
-            except:
-                return render_template("booksLoan.html", reader_name=reader, LoanFail="Loan failed, please try again")
-
-            # null session
-            session["location_id"] = None
-            session["book_id"] = None
-
-            # show success message
-            return render_template("booksLoan.html", reader_name=reader, LoanSuccess="You loan a book")
-
-        # check ISBN
+        # Step 2: Check ISBN
         ISBN = request.form.get("ISBN")
-        reader_name = request.form.get("reader_name")  # keep reader name
         if ISBN:
-            results = FindBook(engine, ISBN)  # find book by ISBN
+            results = FindBook(engine, ISBN)
             if not results:
-                return render_template(
-                    "booksLoan.html",
-                    NoFind="No book found with the provided ISBN",
-                    reader_name=reader_name
-                )
+                flash("No book found with the provided ISBN.", "error")
+                return render_template("booksLoan.html", reader_name=session.get("reader_name"))
 
-            save = FindLocation(engine, ISBN)
-            if save:
-                row = save[0]
+            # If book exists, get location
+            location = FindLocation(engine, ISBN)
+            if location:
+                row = location[0]
                 session['location_id'] = row[0]
                 session['book_id'] = row[1]
+                return render_template("booksLoan.html", datail=results, reader_name=session.get("reader_name"))
+            else:
+                flash("Book location not found.", "error")
+                return render_template("booksLoan.html", reader_name=session.get("reader_name"))
 
-            return render_template(
-                "booksLoan.html",
-                datail=results,
-                reader_name=reader_name
-            )
+        # If no valid form data, reload page
+        return render_template("booksLoan.html", reader_name=session.get("reader_name"))
 
-        # If ISBN is null but has reader_name 
-        if reader_name:
-            return render_template(
-                "booksLoan.html",
-                reader_name=reader_name,
-                NoFind="Please input ISBN"
-            )
+@BooksLoan_bp.route("/loan-book/confirm", methods=["POST"])
+def confirm_loan():
+    reader_id = session.get("reader_id")
+    book_id = request.form.get("book_id")
 
-        # if no valid form data, reload page
-        return render_template("booksLoan.html")
+    if not reader_id or not book_id:
+        flash("Missing reader or book information, please try again.", "error")
+        return redirect(url_for("booksLoan.BookLoan"))
+
+    book_location_id = FindLocationIDByBookId(engine, book_id)
+    if not book_location_id:
+        flash("Cannot find book location record.", "error")
+        return redirect(url_for("booksLoan.BookLoan"))
+
+    try:
+        insertStatus = InsertLoanRecord(engine, reader_id, book_location_id)
+        updateStatus = UpdateState(engine, book_id)
+
+        if insertStatus and updateStatus:
+            flash("Successfully borrowed the book.", "success")
+        else:
+            flash("Failed to loan the book, please try again.", "error")
+
+    except Exception:
+        flash("Failed to loan the book, please try again.", "error")
+
+    return redirect(url_for("booksLoan.BookLoan"))
