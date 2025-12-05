@@ -11,6 +11,7 @@ return_book_bp = Blueprint("returnBook", __name__)
 
 @return_book_bp.route("/return-book", methods=["GET", "POST"])
 def return_book():
+    # status and reader_id_qs for the confirm_function() is finished
     status = request.args.get("status")
     reader_id_qs = request.args.get("reader_id")
 
@@ -65,7 +66,7 @@ def return_book():
         error = "Reader does not exist"
         return render_template("returnBook.html", error=error)
   
-
+# Function for doing the process of return book
 @return_book_bp.route("/return-book/confirm", methods=["POST"])
 def confirm_return():
   loan_record_id = request.form.get("loan_record_id")

@@ -3,7 +3,7 @@ from sqlalchemy import text, Engine
 def UpdateState(engine: Engine, book_id) -> bool:
   with engine.begin() as conn:
     try:
-      result = conn.execute(text(
+      conn.execute(text(
         """
         UPDATE books_location
         SET book_status = 'L'
