@@ -11,7 +11,6 @@ search_bp = Blueprint("search", __name__)
 def search_books():
     results = None
 
-    # query = request.form.get('search_query', '').strip()
     if request.method == "GET":
         return render_template("searchBook.html")
 
@@ -27,7 +26,6 @@ def search_books():
                 error="Please enter a book title or author name or ISBN number.",
             )
         results = search_book(engine, book_title, author_name, isbn_no)
-        # print("query result: ", results , "type of: ", type(results))
         print("query result: ", results)
         print("result type: ", type(results))
         return render_template("searchBook.html", books=results)
