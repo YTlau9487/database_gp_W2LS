@@ -13,7 +13,7 @@ with engine.connect() as conn:
         cmd = command.strip()
         if cmd:  # skip empty lines
             conn.execute(text(cmd))
-    conn.commit()  # very important!
+    conn.commit()
 
 print("All tables created successfully!")
 
@@ -25,7 +25,7 @@ with engine.connect() as conn:
         cmd = command.strip()
         if cmd:  # skip empty lines
             conn.execute(text(cmd))
-    conn.commit()  # very important!
+    conn.commit()
 
 print("All records created successfully!")
 
